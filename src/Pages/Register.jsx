@@ -1,11 +1,27 @@
-import React from "react";
+import React, { use, useContext } from "react";
 
 import { Link } from "react-router";
+import { AuthContext } from "../Provider/AuthProvider";
 
 const Register = () => {
-  const handleSubmit = (e) => {
+  const { createUser, setUser } = useContext(AuthContext);
+  const handleRegister = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
+    const form = e.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    createUser(email, password)
+      .then((result) => {
+        const user = result.user;
+        setUser(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        alert(errorMessage);
+        // ..
+      });
   };
 
   return (
@@ -16,23 +32,27 @@ const Register = () => {
         </h1>
         <hr className="border-t-1 border-base-300 my-4" />
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleRegister}
           className="flex flex-col gap-4 items-center space-y-4 mt-10"
         >
           <div className="w-full ">
             <h1 className="font-semibold mb-2">Name</h1>
             <input
+              name="name"
               type="text"
               placeholder="Type your name"
               className="input  w-full"
+              required
             />
           </div>
           <div className="w-full space-y-2">
             <h1 className="font-semibold mb-2">Photo URL</h1>
             <input
+              name="photoURL"
               type="text"
               placeholder="paste your phot URL"
               className="input  w-full"
+              required
             />{" "}
             <p className="text-accent text-xs font-semibold">or choose</p>
             <input type="file" className="file-input file-input-ghost" />
@@ -41,18 +61,26 @@ const Register = () => {
           <div className="w-full ">
             <h1 className="font-semibold mb-2">Email</h1>
             <input
+              name="email"
               type="text"
               placeholder="Type your Email"
               className="input  w-full"
+              required
             />
           </div>
           <div className="w-full ">
             <h1 className="font-semibold mb-2">Password</h1>
             <input
+              name="password"
               type="password"
               placeholder="Type your password"
               className="input  w-full"
+              required
             />
+          </div>
+          <div className="flex justify-start gap-2 w-full">
+            <input type="checkbox" defaultChecked className="checkbox " />{" "}
+            <p> Accept all terms and condition</p>
           </div>
 
           <button

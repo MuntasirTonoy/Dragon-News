@@ -1,8 +1,6 @@
 import { Bookmark, EyeIcon, Share2, Star } from "lucide-react";
 
 const Middle = ({ newsByCategory }) => {
-  console.log(newsByCategory);
-
   return (
     <div className=" col-span-6 ">
       <h1 className="text-primary font-semibold text-xl">All News</h1>

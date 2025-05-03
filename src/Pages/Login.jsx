@@ -1,10 +1,24 @@
-import React from "react";
+import React, { use } from "react";
 import { Link } from "react-router";
+import { AuthContext } from "../Provider/AuthProvider";
 
 const Login = () => {
-  const handleSubmit = (e) => {
+  const { signIn } = use(AuthContext);
+  const handleLogin = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    signIn(email, password)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        alert(errorMessage);
+      });
   };
 
   return (
@@ -15,7 +29,7 @@ const Login = () => {
         </h1>
         <hr className="border-t-1 border-base-300 my-4" />
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleLogin}
           className="flex flex-col gap-4 items-center space-y-4"
         >
           <div className="w-full mt-6">
@@ -38,6 +52,7 @@ const Login = () => {
                 </g>
               </svg>
               <input
+                name="email"
                 type="email"
                 className="grow"
                 placeholder="mail@site.com"
@@ -70,15 +85,22 @@ const Login = () => {
                 </g>
               </svg>
               <input
+                name="password"
                 type="password"
                 className="grow"
                 required
                 placeholder="Password"
-                minLength="8"
-                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
               />
             </label>
+            <p className="validator-hint hidden">
+              Must be more than 8 characters, including
+              <br />
+              At least one number <br />
+              At least one lowercase letter <br />
+              At least one uppercase letter
+            </p>
           </div>
+
           <button
             type="submit"
             className="btn bg-primary text-base-200 btn-block"
