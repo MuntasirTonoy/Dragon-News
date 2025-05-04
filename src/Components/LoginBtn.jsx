@@ -15,7 +15,7 @@ const LoginBtn = () => {
         console.error("Logout error:", error);
       });
   };
-  console.log(user);
+
   return (
     <div className="absolute top-0 right-0  p-4 ">
       {user ? (
