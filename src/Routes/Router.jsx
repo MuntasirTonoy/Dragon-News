@@ -3,6 +3,7 @@ import Home from "../Pages/Home/Home";
 import Root from "../Root";
 import Login from "../Pages/Login";
 import Register from "../Pages/Register";
+import NewsDetails from "../Pages/NewsDetails";
 
 const Router = createBrowserRouter([
   {
@@ -23,6 +24,11 @@ const Router = createBrowserRouter([
   {
     path: "register",
     element: <Register />,
+  },
+  {
+    path: "news-details/:id",
+    element: <NewsDetails />,
+    loader: () => fetch("/news.json"),
   },
 ]);
 export default Router;

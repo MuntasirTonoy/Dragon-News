@@ -1,26 +1,40 @@
-import React, { use, useContext } from "react";
+import React, { useContext } from "react";
 
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthProvider";
+import { updateProfile } from "firebase/auth";
 
 const Register = () => {
   const { createUser, setUser } = useContext(AuthContext);
+  const navigate = useNavigate(); // Hook for navigation
   const handleRegister = (e) => {
     e.preventDefault();
     const form = e.target;
     const name = form.name.value;
+    const photoURL = form.photoURL.value;
     const email = form.email.value;
     const password = form.password.value;
+
     createUser(email, password)
       .then((result) => {
         const user = result.user;
-        setUser(user);
+
+        // Update displayName and photoURL
+        updateProfile(user, {
+          displayName: name,
+          photoURL: photoURL,
+        })
+          .then(() => {
+            setUser({ ...user, displayName: name, photoURL: photoURL });
+            navigate("/home");
+            alert("Registration successful!");
+          })
+          .catch((error) => {
+            alert("Profile update failed: " + error.message);
+          });
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        alert(errorMessage);
-        // ..
+        alert("Error: " + error.message);
       });
   };
 

@@ -1,4 +1,5 @@
 import { Bookmark, EyeIcon, Share2, Star } from "lucide-react";
+import { Link } from "react-router";
 
 const Middle = ({ newsByCategory }) => {
   return (
@@ -40,9 +41,12 @@ const Middle = ({ newsByCategory }) => {
                 alt={`${news.title} thumbnail`}
               />
               <p className="text-md text-accent line-clamp-6">{news.details}</p>
-              <a className="text-orange-500 font-semibold cursor-pointer">
+              <Link
+                to={`/news-details/${news.id}`}
+                className="text-orange-500 font-semibold cursor-pointer"
+              >
                 Read more
-              </a>
+              </Link>
               <hr className="border-t-2 border-base-300   my-4" />
               <div className="flex justify-between">
                 <div className="flex gap-2 items-center">
