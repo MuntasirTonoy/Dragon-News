@@ -13,11 +13,14 @@ export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const auth = getAuth(app);
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // Loading state
+
   const createUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
   const signIn = (email, password) => {
+    setLoading(true); // Set loading to true when signing in
     return signInWithEmailAndPassword(auth, email, password);
   };
 
@@ -28,6 +31,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      setLoading(false); // Set loading to false when auth state changes
     });
     return unsubscribe; // ✅ Correct cleanup
   }, [auth]);
@@ -38,6 +42,8 @@ const AuthProvider = ({ children }) => {
     createUser,
     logout,
     signIn,
+    loading,
+    setLoading,
   };
 
   return (

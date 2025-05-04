@@ -3,7 +3,6 @@ import Header from "../Components/Header";
 import { Link, useLoaderData, useParams } from "react-router";
 import RightBar from "./Home/RightBar";
 import { ArrowLeft } from "lucide-react";
-import Login from "./Login";
 import LoginBtn from "../Components/Loginbtn";
 
 const NewsDetails = () => {

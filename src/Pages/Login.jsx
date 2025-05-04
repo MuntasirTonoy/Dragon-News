@@ -1,11 +1,12 @@
-import React, { useContext } from "react";
-import { Link, useNavigate } from "react-router"; // Correct import
+import React, { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router"; // Correct import
 import { AuthContext } from "../Provider/AuthProvider";
 
 const Login = () => {
+  const [error, setError] = useState(""); // State for error handling
   const { signIn } = useContext(AuthContext); // Correct hook
   const navigate = useNavigate(); // Hook for navigation
-
+  const location = useLocation(); // Hook for location
   const handleLogin = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -15,13 +16,11 @@ const Login = () => {
     signIn(email, password)
       .then((result) => {
         const user = result.user;
-        console.log(user); // Log user info
-        navigate("/home"); // Redirect on success
+        navigate(`${location.state ? location.state : "/home"}`); // Redirect on success
       })
       .catch((error) => {
-        const errorMessage = error.message;
-        alert("Wrong password or Email : Login failed "); // Show error
-        // No redirect
+        const errorCode = error.code;
+        setError(errorCode); // Set error message
       });
   };
 
@@ -57,16 +56,17 @@ const Login = () => {
             <label className="input input-bordered flex items-center gap-2 w-full">
               {/* ...svg omitted for brevity... */}
               <input
+                defaultValue="123456"
                 name="password"
                 type="password"
                 className="grow"
-                required
                 placeholder="Password"
+                required
               />
             </label>
           </div>
 
-          {/* Submit Button */}
+          {error && <p className="text-red-500 text-sm">{error}</p>}
           <button
             type="submit"
             className="btn bg-primary text-base-200 btn-block"
