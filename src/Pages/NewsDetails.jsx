@@ -19,6 +19,7 @@ const NewsDetails = () => {
   return (
     <div>
       <Header />
+      <LoginBtn />
       <section className="grid grid-cols-12 gap-4 p-10">
         <main className="col-span-9  p-5">
           <Link to="/" className="text-primary font-semibold text-xl mb-5 flex">
